@@ -1,0 +1,12 @@
+(1)reapberry pi:
+This project use camera to detect hunman(openCV) face and control step motor to rotate head 
+,pi use I2C to communicate with arduino Mega 2560,control behavier list below 
+
+						pi					=>		arduino 
+command		motor rotate				make pluses to drive motor	
+					motor stop					stop to make pulses
+					face LED on					turn LED on
+					face LED off				turn LED off				
+
+(2)arduino Mega 2560
+control LED on face and make pluses to rotate and stop step motor 
