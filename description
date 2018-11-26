@@ -2,11 +2,28 @@
 This project use camera to detect hunman(openCV) face and control step motor to rotate head 
 ,pi use I2C to communicate with arduino Mega 2560,control behavier list below 
 
-						pi					=>		arduino 
-command		motor rotate				make pluses to drive motor	
-					motor stop					stop to make pulses
-					face LED on					turn LED on
-					face LED off				turn LED off				
+pi => arduino 
+													command	valueH	valueL
+													number
+no action									0x00		0x00		0x00
+motor direction CW				0x01		0x00		0x00
+motor	direction CCW				0x01		0x00		0x01
+motor rotate(step *n1*)		0x02		0xVV		0xVV							
+motor stop(no pulse)			0x03		0x00		0x00
+motor speed(0-9)					0x04		0x00		0x0V 									
+face LED on								0x05		0x00		0x00													
+face LED off							0x06		0x00		0x00
+
+
+*n1*					
+motor driver sets 1600 pulses let motor run 1000 steps
+,above  statement that means below
+
+if we need motor run 1 step
+pulse : step	= pulse :	step
+1600	:	1000	=	x			:	1
+						x	=	1.6
+so at least drive motor needs 8 pules(1.6*5) that equals motor run 5 steps
 
 (2)arduino Mega 2560
 control LED on face and make pluses to rotate and stop step motor 
