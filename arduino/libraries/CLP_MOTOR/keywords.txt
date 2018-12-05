@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map For Timer Library
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+CLP_MOTOR	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+CLP_MOTOR_Initial	KEYWORD2
+CLP_MOTOR_Initial_all	KEYWORD2
+setCLPMTR_Forward	KEYWORD2
+setCLPMTR_Reverse	   KEYWORD2
+setCLPMTR_HIGH		KEYWORD2
+setCLPMTR_LOW  		KEYWORD2
+setCLPMTR_Enable	   KEYWORD2
+setCLPMTR_Disable	   KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
