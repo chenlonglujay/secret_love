@@ -1,0 +1,25 @@
+1. arduino Meag 2560 burning program "test_I2C.ino" and using Serial Monitor to observe
+    receive data from raspberry Pi3 by I2C  
+
+2. raspberry Pi3 
+    (1) cd c++
+    (2) make
+    (3) ./I2C_control
+    (4) type data (format: xxxxxx)
+        ex: 010101
+    (5) cd ../python
+    (6) python I2C_send_command_from_shm.py
+
+3. then you will see like below
+    ---python view---
+    command: 1
+    valueH:  1
+    valueL:  1
+    
+    ---arduino view---
+    command:1
+    valueH:1
+    valueL:1
+
+if you go through above operation ,this I2C function is correct
+    
