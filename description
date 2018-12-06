@@ -1,18 +1,19 @@
 (1)reapberry pi:
-This project use camera to detect hunman(openCV) face and control step motor to rotate head 
+This project use camera to detect human(openCV) face and control step motor to rotate by commands 
 ,pi use I2C to communicate with arduino Mega 2560,control behavier list below 
 
-pi => arduino 
-													command	valueH	valueL
-													number
-no action									0x00		0x00		0x00
-motor direction CW				0x01		0x00		0x00
-motor	direction CCW				0x01		0x00		0x01
-motor rotate(step *n1*)		0x02		0xVV		0xVV							
-motor stop(no pulse)			0x03		0x00		0x00
-motor speed(0-9)					0x04		0x00		0x0V 									
-face LED on								0x05		0x00		0x00													
-face LED off							0x06		0x00		0x00
+                            pi => arduino 
+										command	valueH	valueL
+										number
+no action							    0x00		0x00		0x00
+motor direction CW				        0x01		0x00		0x00
+motor direction CCW				        0x01		0x00		0x01
+motor rotate(step *n1*)		            0x02		0xVV		0xVV							
+motor stop(jog mode)			        0x03		0x00		0x00
+motor stop(no pulse)			        0x04		0x00		0x00
+motor speed(0-9)					    0x05		0x00		0x0V 									
+face LED on								0x06		0x00		0x00
+face LED off							0x07		0x00		0x00
 
 
 *n1*					
@@ -26,4 +27,4 @@ pulse : step	= pulse :	step
 so at least drive motor needs 8 pules(1.6*5) that equals motor run 5 steps
 
 (2)arduino Mega 2560
-control LED on face and make pluses to rotate and stop step motor 
+control LED on face and make pluses to rotate or stop for step motor 
