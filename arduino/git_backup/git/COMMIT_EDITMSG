@@ -1,0 +1,15 @@
+[secret_love][arduino] CLPMotor_LED add I2C communication 
+
+you can use below program(raspberry pi3) to commutes wtih CLPMotor_LED(arduino)
+by I2C,raspberry pi3 sends command to arduino to control Motor and LED
+
+program 1: c++/I2C_control.cpp
+program 2: python/I2C_send_command_from_shm.py
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#	modified:   CLPMotor_LED.h
+#	modified:   CLPMotor_LED.ino
+#
