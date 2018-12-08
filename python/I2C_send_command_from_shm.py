@@ -26,12 +26,11 @@ def get_I2C_data(get_data, I2C_data, display):
         print(I2C_data[4] + I2C_data[5])
     return 0
 
-def I2C_data_to_int(I2C_data, data_change, display):
+def I2C_data_to_int(I2C_data, display):
     
     I2C_data[1] = int(I2C_data[1],16)
     I2C_data[3] = int(I2C_data[3],16)
     I2C_data[5] = int(I2C_data[5],16)
-    data_change[3] = I2C_data[1]
     if(display):
         print('%s%x' %(I2C_data[0], I2C_data[1]))
         print('%s%x' %(I2C_data[2], I2C_data[3]))
@@ -40,16 +39,14 @@ def I2C_data_to_int(I2C_data, data_change, display):
 
     return 0
 
-def I2C_send_data(I2C_data, data_change ,display):
+def I2C_send_data(I2C_data, display):
 
     #print('before: %x' %(data_change[1]))
     #print('now: %x' %(data_change[3]))   
-
-    if(data_change[1] != data_change[3]):     
-        if(display):
-            I2C_send_data_display(I2C_data, display)
-        I2C_write_data(I2C_data) 
-        data_change[1] = data_change[3]
+    #before != now
+    if(display):
+        I2C_send_data_display(I2C_data, display)
+    I2C_write_data(I2C_data) 
     return 0
 
 def I2C_send_data_display(I2C_data, switch):
@@ -75,7 +72,7 @@ try:
     shmat.restype = c_void_p
 
     shmid = shmget(SHM_KEY, SHM_SIZE, 0o666)
-
+    
     if shmid < 0:
         print ("System not infected")
     else:
@@ -86,15 +83,16 @@ try:
     while True:
         get_data = string_at(addr, SHM_SIZE)
         #print(get_data)
-
-        I2C_data = ['command: ', 0x00, 'valueH: ', 0x00, 'valueL: ', 0x00]
+        data_change[3] = get_data;
+        if(data_change[1] != data_change[3] ):
+            I2C_data = ['command: ', 0x00, 'valueH: ', 0x00, 'valueL: ', 0x00]
         
-        get_I2C_data(get_data, I2C_data , 0)
+            get_I2C_data(get_data, I2C_data , 0)
         
-        I2C_data_to_int(I2C_data, data_change, 0)
+            I2C_data_to_int(I2C_data, 0)
         
-        I2C_send_data(I2C_data, data_change, 1)
-        
+            I2C_send_data(I2C_data, 1)
+        data_change[1] = get_data;
         #time.sleep(0.1)
 finally:
     print("exit")

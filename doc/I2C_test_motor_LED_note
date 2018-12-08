@@ -37,9 +37,8 @@
         ex: 0203E8
     (5) cd ../python
     (6) python I2C_send_command_from_shm.py
-    (7) if you need to send next data ,that must to send 000000 
-        first and then you can send next data,
-        otherwise python will stop sends data until you send 000000
+    (7) if you need to send next data ,that data must difference before
+        otherwise python doesn't send data this time
 
 3. then you will see like below
     ---python view---

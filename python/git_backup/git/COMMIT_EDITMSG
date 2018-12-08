@@ -1,14 +1,12 @@
-[youtuber][secret_love][python] get data from I2C_control.cpp
+[youtuber][secret_love][python] modify judge method which data from share memory is or not same as before 
 
- read date from share memoy
 
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
-#
-# Initial commit
-#
 # Changes to be committed:
-#	new file:   I2C_send_command_from_shm.py
-#	new file:   note
+#	modified:   I2C_send_command_from_shm.py
+#
+# Untracked files:
+#	git_backup/
 #
