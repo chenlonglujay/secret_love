@@ -55,7 +55,7 @@
 
 
 if you go through above operation ,this I2C function is correct
-
+*maybe arduino and pi has difference voltage level,so pi couldn't receives data from arduino*
 
 
 
