@@ -1,0 +1,25 @@
+[youtuber][secret_love][c++] test data to I2C_send_command_from_shm.py 
+
+(1)write data to share memory
+(2)data format:
+   command:00~FFH
+   valueH:00~FFH
+   valueL:00~FFH
+
+  how to use please following below:
+  1. ./I2C_control
+  2. type data ex: 010203
+      that expresses command valueH valueL
+
+
+
+# please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#	new file:   I2C_control.cpp
+#	new file:   Makefile
+#
