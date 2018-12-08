@@ -4,31 +4,31 @@ void setup() {
   // put your setup code here, to run once:
     Serial.begin(9600);
     Serial.println(F("start"));
+    Wire.begin(SLAVE_ADDRESS);
+    I2C_initial();
     CLPMTR_initial();
     Timer4_initial();
     Timer5_initial();
     LED_initial();
     LED_BTN_initial();
- #if turn_therad_on
+ #if turn_therad_state
     thread_initial(); 
  #endif  
- delay(3000);     //delay wait CLP motor and driver
+ delay(3000);     //delay wait for CLP motor and driver
 }
 
 void loop() {
- #if turn_therad_on
+ #if turn_therad_state
     controll.run();      
  #else if
- MOTOR_thread_Callback();
+  MOTOR_thread_Callback();
+  LED_BTN_thread_Callback();
 #endif
 }
 
 
 void LED_initial() {
-    pinMode(face_LED_R,OUTPUT);
-    pinMode(face_LED_L,OUTPUT);
-    digitalWrite(face_LED_R,LOW);   //LED OFF
-    digitalWrite(face_LED_L,LOW);   //LED OFF
+    LED_ON_OFF(face_LED_R, face_LED_L, 0);
 }     
 
 void LED_BTN_initial() {
@@ -37,35 +37,41 @@ void LED_BTN_initial() {
     pinMode(LED_BTN, INPUT);     
 }
 
- #if turn_therad_on
+ #if turn_therad_state
 //thread_initial
 void  thread_initial() {  
+ 
+ #if turn_LED_BTN_thread_state  
     LED_BTN_thread.onRun(LED_BTN_thread_Callback);
     LED_BTN_thread.setInterval(100);
     controll.add(&LED_BTN_thread);  // Add LED_BTN_thread to the controller
+#endif    
     MOTOR_thread.onRun(MOTOR_thread_Callback);
     MOTOR_thread.setInterval(100);
     controll.add(&MOTOR_thread);  // Add MOTOR_BTN_thread to the controller
 }
 #endif
 
+void I2C_initial() {
+    // define callbacks for i2c communication
+    Wire.onReceive(receiveData);
+    //Wire.onRequest(sendData);  
+    I2C_data_initial(&I2C_data);
+}
+
 void LED_BTN_thread_Callback() {
      bool LED_SW = digitalRead(LED_BTN);
     //true: no press, false:press
-    if( LED_SW ) {
-        digitalWrite(face_LED_R,LOW);   //LED OFF
-        digitalWrite(face_LED_L,LOW);   //LED OFF
-        //Serial.println(F("LED OFF"));
-    } else {
-        digitalWrite(face_LED_R,HIGH);   //LED ON
-        digitalWrite(face_LED_L,HIGH);   //LED ON 
-        //Serial.println(F("LED ON"));  
-    }
+     LED_ON_OFF(face_LED_R, face_LED_L, !LED_SW);
 }
 
 void MOTOR_thread_Callback() {
-
-    if(motor_set.control_mode == motor_set.by_btn) {
+    if (motor_set.control_mode == motor_set.by_command) {
+          if( I2C_data.counter == 3) {
+            combine_command(&I2C_data);
+            judge_command(&I2C_data);
+          }
+    } else if (motor_set.control_mode == motor_set.by_btn) {
           bool  CW =   digitalRead(CW_BTN);     
           bool  CCW =   digitalRead(CCW_BTN);        
           if( CW && CCW ||  !CW && !CCW) {
@@ -78,10 +84,10 @@ void MOTOR_thread_Callback() {
           }
     } else if (motor_set.control_mode == motor_set.by_step) {
              if (motor_set.arrive && run_once==0){
-              Serial.println(F("motor run"));  
+                Serial.println(F("motor run"));  
                 motor_set.set_speed = 6;
-                motor_set.CW_CCW = 0; 
-                CLPMTR_JogStepSet(motor_set.CW_CCW, 0);
+                motor_set.DIR = 0; 
+                CLPMTR_JogStepSet(motor_set.DIR, 0);
              }
     }
 }
@@ -89,11 +95,7 @@ void MOTOR_thread_Callback() {
 //timer set and CLPM StepSet
 void CLPMTR_JogStepSet(bool CW_CCW, bool CLPM_arrive) {
     //Serial.println(F( "CLPMTR_JogStepSet"));
-    if (CW_CCW == 0) {    
-         CLPM_tester->setCLPMTR_CW();        
-    } else if (CW_CCW == 1) {    
-         CLPM_tester->setCLPMTR_CCW();
-    }
+    set_motor_DIR(CW_CCW);   
     TCNT4 = Timer4CountSet[motor_set.set_speed];
     TCNT5 = Timer5CountSet[timer5set];
    motor_set.arrive = CLPM_arrive;
@@ -106,13 +108,7 @@ void CLPMTR_initial() {
     CLPM_tester->CLP_MOTOR_Initial(testerPUL,testerDIR); 
     CLPM_tester->setCLPMTR_LOW();
     CLPM_tester->setCLPMTR_CW();
-
-    motor_set.arrive = true;
-    motor_set.CW_CCW = 0;      //0 CW ,1 CCW
-    motor_set.TimerSW = 0;      //pulse high low change
-    motor_set.set_speed = 6;
-    motor_set.pulse_count = 0;
-    motor_set.control_mode =   motor_set.by_step;
+    motor_set_initial(&motor_set, motor_set.by_command);
 }
 
 
@@ -188,10 +184,13 @@ ISR (TIMER4_OVF_vect) {
 ISR (TIMER5_OVF_vect) {
     TIMSK5 = 0x00;     //timer5 stop
     TCNT5 = Timer5CountSet[timer5set];  
-    if( motor_set.control_mode == motor_set.by_step) {
-          if (motor_set.pulse_count == test_pulse)  {
-               digitalWrite(face_LED_R,HIGH);   //LED ON
-              digitalWrite(face_LED_L,HIGH);   //LED ON 
+    if(motor_set.control_mode == motor_set.by_command) {
+          if (motor_set.pulse_count >= motor_set.set_pulse)  {     
+              motor_set.pulse_count = 0;
+               motor_set.arrive = 1;    
+            }
+    } else if( motor_set.control_mode == motor_set.by_step) {
+          if (motor_set.pulse_count == test_pulse)  {            
              motor_set.arrive = 1;     
              run_once = 1;     
              motor_set.pulse_count = 0;
@@ -203,5 +202,78 @@ ISR (TIMER5_OVF_vect) {
       TIMSK5 = 0x00;     //timer5 stop
     }
 }
+
+
+// callback for received data
+void receiveData(int byteCount) {
+  while (Wire.available()) {
+             uint8_t receive_data = Wire.read();
+             save_data_from_I2C(&I2C_data, receive_data);          
+    }   
+}
+
+void judge_command(struct I2C_get_data *input) {
+      switch (input->number) {
+       case 0x00:
+          //nothing          
+       break;
+       case 0x01:
+          //motor direction CW or CCW
+          set_motor_DIR(bool(input->command));
+       break;
+      case 0x02:
+          //motor rotate step
+          motor_set.set_step = input->command;
+          motor_set.set_pulse = motor_set.set_step * 16 /10;
+             Serial.print(F("motor_set.set_pulse :  "));
+            Serial.println(motor_set.set_pulse );
+          CLPMTR_JogStepSet(motor_set.DIR , 0);
+       break;
+       case 0x03:
+       {
+          //motor jog mode           
+          motor_set.set_pulse = motor_set.jog_step * 16 /10;
+          CLPMTR_JogStepSet(motor_set.DIR , 0);
+       }
+       break;
+       case 0x04:
+          //motor stop
+          motor_set.pulse_count = 0;
+          motor_set.set_pulse = 0;
+          TimerStop();          
+       break;
+        case 0x05:
+        {
+          //motor speed
+          uint8_t sp = (uint8_t)input->command;
+          sp = motor_speed_check(sp);
+          motor_set.set_speed = sp;
+        }
+       break;
+       case 0x06:
+       {
+          //LED ON/OFF
+            bool LED_SW= (bool)input->command; 
+            LED_ON_OFF(face_LED_R, face_LED_L, LED_SW);
+       }
+       break;
+      };    
+         I2C_data_initial(&I2C_data);     
+}
+
+void set_motor_DIR(bool DIR) {
+    if (DIR == motor_set.CW) {    
+         motor_set.DIR = CLPM_tester->setCLPMTR_CW();      
+    } else if (DIR == motor_set.CCW) {    
+         motor_set.DIR= CLPM_tester->setCLPMTR_CCW();
+    }
+}
+
+/*
+// callback for sending data
+void sendData() {
+  Wire.write(number);
+}*/
+
 
 

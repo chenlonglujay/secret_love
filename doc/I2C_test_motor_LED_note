@@ -1,0 +1,63 @@
+1. arduino Meag 2560 burning program "CLPMotor_LED.ino" and using Serial Monitor to observe
+    receive data from raspberry Pi3 by I2C  
+  
+    *NOTE*
+    if you want to observe receive data,you must to cancel /**/ like below in the CLPMotor_LED.h
+    void combine_command(struct I2C_get_data *input) { 
+        /*
+        Serial.print(F("receive number: "));
+        Serial.println(input->number);
+        Serial.print(F("receive command: DEC "));
+        Serial.println(input->command );
+        Serial.print(F("receive command: 0x"));
+        Serial.println(input->command , HEX);     
+        */
+    }
+----------------------------------------------------------------------------- 
+  control behavier list below  
+                               pi => arduino  
+                                          command valueH  valueL 
+                                          number
+  no action                               0x00        0x00        0x00
+  motor direction CW                      0x01        0x00        0x00
+  motor direction CCW                     0x01        0x00        0x01
+  motor rotate(step *n1*)                 0x02        0xVV        0xVV
+  motor rotate(jog mode)                  0x03        0x00        0x00
+  motor stop(no pulse)                    0x04        0x00        0x00
+  motor speed(0(fast)-9(slow))            0x05        0x00        0x0V
+  face LED on                             0x06        0x00        0x01
+  face LED off                            0x06        0x00        0x00
+------------------------------------------------------------------------------
+
+2. raspberry Pi3 
+    (1) cd c++
+    (2) make
+    (3) ./I2C_control
+    (4) type data (format: xxxxxx) that using above list command
+        ex: 0203E8
+    (5) cd ../python
+    (6) python I2C_send_command_from_shm.py
+    (7) if you need to send next data ,that must to send 000000 
+        first and then you can send next data,
+        otherwise python will stop sends data until you send 000000
+
+3. then you will see like below
+    ---python view---
+    command: 2
+    valueH:  3
+    valueL:  E8
+    
+    ---arduino view---
+    receive number: 2
+    receive command: DEC 1000
+    receive command: 0x3E8 
+
+   motor will rotate 1000 steps(1 circle)
+
+
+if you go through above operation ,this I2C function is correct
+
+
+
+
+    

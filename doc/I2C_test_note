@@ -9,7 +9,9 @@
         ex: 010101
     (5) cd ../python
     (6) python I2C_send_command_from_shm.py
-
+    (7) if you need to send next data ,that must to send 000000 
+        first and then you can send next data,
+        otherwise python will stop sends data until you send 000000
 3. then you will see like below
     ---python view---
     command: 1
