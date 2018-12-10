@@ -1,15 +1,16 @@
-[secret_love][arduino] CLPMotor_LED add I2C communication 
+[secret_love][arduino] modify jog mode action
 
-you can use below program(raspberry pi3) to commutes wtih CLPMotor_LED(arduino)
-by I2C,raspberry pi3 sends command to arduino to control Motor and LED
-
-program 1: c++/I2C_control.cpp
-program 2: python/I2C_send_command_from_shm.py
+when arduino receives 030000(jog mode) then
+motor run and doesn't stop until raspberry pi sends 040000(stop mode)
 
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
 # Changes to be committed:
-#	modified:   CLPMotor_LED.h
-#	modified:   CLPMotor_LED.ino
+#	modified:   CLPMotor_LED/CLPMotor_LED.h
+#	modified:   CLPMotor_LED/CLPMotor_LED.ino
+#
+# Untracked files:
+#	0001-modify-jog-mode-when-arduino-receives-030000-jog-mod.patch
+#	git_backup/
 #

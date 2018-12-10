@@ -185,10 +185,12 @@ ISR (TIMER5_OVF_vect) {
     TIMSK5 = 0x00;     //timer5 stop
     TCNT5 = Timer5CountSet[timer5set];  
     if(motor_set.control_mode == motor_set.by_command) {
-          if (motor_set.pulse_count >= motor_set.set_pulse)  {     
-              motor_set.pulse_count = 0;
-               motor_set.arrive = 1;    
-            }
+        if(motor_set.act_mode.mode == motor_set.act_mode.by_step) {     
+                  if (motor_set.pulse_count >= motor_set.set_pulse)  {     
+                      motor_set.pulse_count = 0;
+                       motor_set.arrive = 1;    
+                    } 
+          }
     } else if( motor_set.control_mode == motor_set.by_step) {
           if (motor_set.pulse_count == test_pulse)  {            
              motor_set.arrive = 1;     
@@ -225,14 +227,14 @@ void judge_command(struct I2C_get_data *input) {
           //motor rotate step
           motor_set.set_step = input->command;
           motor_set.set_pulse = motor_set.set_step * 16 /10;
-             Serial.print(F("motor_set.set_pulse :  "));
-            Serial.println(motor_set.set_pulse );
+          //Serial.print(F("motor_set.set_pulse :  "));
+          //Serial.println(motor_set.set_pulse );
+          motor_set.act_mode.mode = motor_set.act_mode.by_step;
           CLPMTR_JogStepSet(motor_set.DIR , 0);
        break;
        case 0x03:
        {
-          //motor jog mode           
-          motor_set.set_pulse = motor_set.jog_step * 16 /10;
+          motor_set.act_mode.mode = motor_set.act_mode.by_jog;
           CLPMTR_JogStepSet(motor_set.DIR , 0);
        }
        break;

@@ -23,4 +23,8 @@
     valueL:1
 
 if you go through above operation ,this I2C function is correct
-*maybe arduino and pi has difference voltage level,so pi couldn't receives data from arduino*    
+*maybe arduino and pi has difference voltage level,so pi couldn't receives data from arduino*   
+
+notice:
+if you send command is 030000(jog mode), motor will start rotating and doesn't stop
+ until you send 040000 stop command  

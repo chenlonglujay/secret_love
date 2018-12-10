@@ -1,1 +1,2 @@
 0000000000000000000000000000000000000000 b05607300914802e4c3593f8137a0a1973449606 chenlonglujay <chenlonglujay@gmail.com> 1543335879 +0000	commit (initial): [youtuber][secret_love][c++] test data to I2C_send_command_from_shm.py
+b05607300914802e4c3593f8137a0a1973449606 51a10a967473dbd8272ce04520961830c10e50ed chenlonglujay <chenlonglujay@gmail.com> 1544460934 +0000	commit: [youtuber][secret_love][c++] add send_I2C_command class to send data to share memory

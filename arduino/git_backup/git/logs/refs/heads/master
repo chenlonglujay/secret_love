@@ -2,3 +2,6 @@
 5aab527aeca4df0b0bf46999ba0511ae7c9cdb92 29e3eee9dd702f1dc3781066d17cec78cad3e5db chenlonglujay <chenlonglujay@gmail.com> 1544100370 +0800	commit: [secret_love][arduino] add set step mode to control CLP motor
 29e3eee9dd702f1dc3781066d17cec78cad3e5db b33c2a16901a810ed742f37337094b5c26838fd5 chenlonglujay <chenlonglujay@gmail.com> 1544102938 +0800	commit: [secret_love][arduino] add I2C test
 b33c2a16901a810ed742f37337094b5c26838fd5 2a058393df4c19e3d35973d8d692745f87758575 chenlonglujay <chenlonglujay@gmail.com> 1544240716 +0800	commit: [secret_love][arduino] CLPMotor_LED add I2C communication
+2a058393df4c19e3d35973d8d692745f87758575 1a717788075f118972a86c73bcc2d1839803cf76 chenlonglujay <chenlonglujay@gmail.com> 1544460304 +0000	am: modify jog mode,when arduino receives 030000(jog mode) then motor run and doesn't stop until raspberry pi sends 040000(stop mode)
+1a717788075f118972a86c73bcc2d1839803cf76 2a058393df4c19e3d35973d8d692745f87758575 chenlonglujay <chenlonglujay@gmail.com> 1544460331 +0000	reset: moving to HEAD^
+2a058393df4c19e3d35973d8d692745f87758575 460fa046ced81b3836ce31894d2737b6a3e4ca2b chenlonglujay <chenlonglujay@gmail.com> 1544460340 +0000	commit: [secret_love][arduino] modify jog mode action

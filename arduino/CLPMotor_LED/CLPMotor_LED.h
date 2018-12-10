@@ -63,18 +63,23 @@ unsigned int Timer4CountSet[10];
 unsigned int Timer5CountSet[7];
 #define timer5set 5
 
+struct action_mode{
+    uint8_t mode;
+    enum{by_jog = 0, by_step};
+};
+
 struct  motor_control{
   bool arrive;
   bool DIR;      //0 CW ,1 CCW
   bool TimerSW;      //pulse high low change
   uint8_t set_speed;
   int pulse_count;
-  uint8_t jog_step;
   uint8_t control_mode;
   int set_step;
   int set_pulse;
   enum {by_btn = 0, by_step, by_command};
   enum {CW = 0,CCW};
+  struct action_mode act_mode;
 } motor_set;
 
 //-------------------------------
@@ -151,8 +156,8 @@ void I2C_data_initial(struct I2C_get_data *input){
     input->pulse_count = 0;
     input->control_mode = mode;
     input->set_step = 0;
-    input->jog_step = 5;
     input->set_pulse = 0;
+    input->act_mode.mode = input->act_mode.by_jog;
 }
 
 uint8_t motor_speed_check( uint8_t  m_speed) {

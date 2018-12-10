@@ -31,13 +31,19 @@
 
 2. raspberry Pi3 
     (1) cd c++
-    (2) make
-    (3) ./I2C_control
-    (4) type data (format: xxxxxx) that using above list command
-        ex: 0203E8
-    (5) cd ../python
-    (6) python I2C_send_command_from_shm.py
-    (7) if you need to send next data ,that data must difference before
+	  (2) make sendI2C
+    (3) ./I2C_test <argv> (I2C_test.cpp uses send_I2C_command class)
+        argv:0,messages like below, key in command and press enter,and loop again
+        please key in number (data format: nnnnnn),press enter will exit
+				
+				ex: key in 0203E8				
+
+        argv:1,motor will start rotating(jog mode) until key in 040000(stop mode),
+              you can use "ctrl+c" to exit,then execute ./I2C_test 0 to key in 040000(stop mode)
+		
+		(4) cd ../python
+    (5) python I2C_send_command_from_shm.py
+    (6) if you need to send next data ,that data must difference before
         otherwise python doesn't send data this time
 
 3. then you will see like below
@@ -55,10 +61,10 @@
 
 
 if you go through above operation ,this I2C function is correct
-*maybe arduino and pi has difference voltage level,so pi couldn't receives data from arduino*
 
 *notice*
 if you send command is 030000(jog mode), motor will start rotating and doesn't stop
  until you send 040000 stop command
 
+*maybe arduino and pi has difference voltage level,so pi couldn't receives data from arduino*
     
