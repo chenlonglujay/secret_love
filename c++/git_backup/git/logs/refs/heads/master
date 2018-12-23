@@ -1,2 +1,6 @@
 0000000000000000000000000000000000000000 b05607300914802e4c3593f8137a0a1973449606 chenlonglujay <chenlonglujay@gmail.com> 1543335879 +0000	commit (initial): [youtuber][secret_love][c++] test data to I2C_send_command_from_shm.py
 b05607300914802e4c3593f8137a0a1973449606 51a10a967473dbd8272ce04520961830c10e50ed chenlonglujay <chenlonglujay@gmail.com> 1544460934 +0000	commit: [youtuber][secret_love][c++] add send_I2C_command class to send data to share memory
+51a10a967473dbd8272ce04520961830c10e50ed 454d4f3d134e6e6d35933c4eab93943a50ad478d chenlonglujay <chenlonglujay@gmail.com> 1545468691 +0000	commit: [youtuber][secret_love][c++] add face detect
+454d4f3d134e6e6d35933c4eab93943a50ad478d 205f34ca88ab1eae442514ca8866ef0688990217 chenlonglujay <chenlonglujay@gmail.com> 1545553492 +0000	commit: [youtuber][secret_love][c++] modify face detect and add action about
+205f34ca88ab1eae442514ca8866ef0688990217 454d4f3d134e6e6d35933c4eab93943a50ad478d chenlonglujay <chenlonglujay@gmail.com> 1545553861 +0000	reset: moving to HEAD^
+454d4f3d134e6e6d35933c4eab93943a50ad478d 3f0bd1190dea2b2a737c8ed31232fc9e19b55b36 chenlonglujay <chenlonglujay@gmail.com> 1545553929 +0000	am: modify face detect and add action about motor
