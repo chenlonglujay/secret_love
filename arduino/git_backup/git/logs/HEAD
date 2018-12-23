@@ -5,3 +5,7 @@ b33c2a16901a810ed742f37337094b5c26838fd5 2a058393df4c19e3d35973d8d692745f8775857
 2a058393df4c19e3d35973d8d692745f87758575 1a717788075f118972a86c73bcc2d1839803cf76 chenlonglujay <chenlonglujay@gmail.com> 1544460304 +0000	am: modify jog mode,when arduino receives 030000(jog mode) then motor run and doesn't stop until raspberry pi sends 040000(stop mode)
 1a717788075f118972a86c73bcc2d1839803cf76 2a058393df4c19e3d35973d8d692745f87758575 chenlonglujay <chenlonglujay@gmail.com> 1544460331 +0000	reset: moving to HEAD^
 2a058393df4c19e3d35973d8d692745f87758575 460fa046ced81b3836ce31894d2737b6a3e4ca2b chenlonglujay <chenlonglujay@gmail.com> 1544460340 +0000	commit: [secret_love][arduino] modify jog mode action
+460fa046ced81b3836ce31894d2737b6a3e4ca2b fd748dc71b0af30bdf5a23414b9d9b2ed838fbdd chenlonglujay <chenlonglujay@gmail.com> 1545557164 +0800	commit: [secret_love][arduino] modify spd6 value from 2ms to 5ms
+fd748dc71b0af30bdf5a23414b9d9b2ed838fbdd 569c525c8dbb6e2d6c234cd2cf4f196e840d543e chenlonglujay <chenlonglujay@gmail.com> 1545558958 +0800	commit: [secret_love][arduino] modify spd6 value from 2ms to 5ms
+569c525c8dbb6e2d6c234cd2cf4f196e840d543e 460fa046ced81b3836ce31894d2737b6a3e4ca2b chenlonglujay <chenlonglujay@gmail.com> 1545559029 +0800	reset: moving to HEAD~2
+460fa046ced81b3836ce31894d2737b6a3e4ca2b c892354508a1592d3f30f000d5828900e52a5b14 chenlonglujay <chenlonglujay@gmail.com> 1545559056 +0800	am: modify spd6 value from 2ms to 5ms

@@ -1,16 +1,12 @@
-[secret_love][arduino] modify jog mode action
-
-when arduino receives 030000(jog mode) then
-motor run and doesn't stop until raspberry pi sends 040000(stop mode)
+ [secret_love][arduino] modify spd6 value from 2ms to 5ms
 
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
 # Changes to be committed:
-#	modified:   CLPMotor_LED/CLPMotor_LED.h
 #	modified:   CLPMotor_LED/CLPMotor_LED.ino
 #
 # Untracked files:
-#	0001-modify-jog-mode-when-arduino-receives-030000-jog-mod.patch
+#	0001-secret_love-arduino-modify-spd6-value-from-2ms-to-5m.patch
 #	git_backup/
 #

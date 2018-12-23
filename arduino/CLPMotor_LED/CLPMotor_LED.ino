@@ -120,7 +120,7 @@ void Timer4_initial() {
     Timer4CountSet[3] = 65473; //0.25ms 250us中斷設定
     Timer4CountSet[4] = 65411; //0.5ms 500us中斷設定
     Timer4CountSet[5] = 65286; //1ms 1000us中斷設定
-    Timer4CountSet[6] = 65036; //2ms 2000us中斷設定
+    Timer4CountSet[6] = 64286; //5ms 5000us中斷設定
     Timer4CountSet[7] = 63036; //10ms 中斷設定
     Timer4CountSet[8] = 53036; //50ms 中斷設定
     Timer4CountSet[9] = 40536; //100ms 中斷設定
