@@ -1,15 +1,14 @@
-[youtuber][secret_love][c++] modify face detect and add action about
-motor
-
+[youtuber][secret_love][c++] turn on eyes detect function and tune
+parameter about image size and eyes detect
 
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
 # Changes to be committed:
-#	modified:   face_detect_control_motor/Makefile
-#	modified:   face_detect_control_motor/main.cpp
-#	new file:   face_detect_control_motor/motor_control.h
+#	new file:   haarcascade_frontalface_alt2.xml
+#	modified:   main.cpp
+#	modified:   motor_control.h
 #
 # Untracked files:
-#	git_backup/
+#	../git_backup/
 #

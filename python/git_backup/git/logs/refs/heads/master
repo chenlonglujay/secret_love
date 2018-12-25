@@ -1,2 +1,3 @@
 0000000000000000000000000000000000000000 0e905a61ed63571fea984d5a2353692adbc309f1 chenlonglujay <chenlonglujay@gmail.com> 1543336782 +0000	commit (initial): [youtuber][secret_love][python] get data from I2C_control.cpp
 0e905a61ed63571fea984d5a2353692adbc309f1 9195daa12bf543500c12f89c981567fad6b651dd chenlonglujay <chenlonglujay@gmail.com> 1544251718 +0000	commit: [youtuber][secret_love][python] modify judge method which data from share memory is or not same as before
+9195daa12bf543500c12f89c981567fad6b651dd d639469e841288a528d63f050c10ade4dd4826b8 chenlonglujay <chenlonglujay@gmail.com> 1545752633 +0000	commit: [youtuber][secret_love][python] modify printf format

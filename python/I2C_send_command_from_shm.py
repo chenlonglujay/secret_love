@@ -51,9 +51,9 @@ def I2C_send_data(I2C_data, display):
 
 def I2C_send_data_display(I2C_data, switch):
     if(switch):
-        print('%s%x' %(I2C_data[0], I2C_data[1]))
-        print('%s%x' %(I2C_data[2], I2C_data[3]))
-        print('%s%x' %(I2C_data[4], I2C_data[5]))
+        print('%s%x %s%x %s%x' %(I2C_data[0], I2C_data[1]
+         ,I2C_data[2], I2C_data[3]
+         ,I2C_data[4], I2C_data[5]))
         print('--------------------------------')
     return 0 
 

@@ -24,17 +24,19 @@
 #define motor_steps_1000 "0203E8"	//1 circle
 #define motor_steps_500 "0201F4"	//half circle
 #define run_count_set 1
-#define run_count_rotate 2000
-
+#define run_count_rotate 150
+#define timer_interval 100000
 struct motor_initial_state{
 		bool timer_unlock;
 		bool finish;
 		int seq;
+		bool action_done;
 };
 
 struct detect_state{
 	bool face_detect;
 	bool eyes_detect;
+	bool all_detect_ok;
 };
 
 struct motor_run_state{
@@ -50,20 +52,21 @@ void setup_motor_initial_state(struct motor_initial_state *st) {
 	st->timer_unlock = false;
 	st->finish = false;
 	st->seq = 0;
+	st->action_done = false;
 }
 
 void setup_detect_state(struct detect_state *st) {
 	st->face_detect = false;
 	st->eyes_detect = false;
+	st->all_detect_ok = false;
 }	
 
-void setup_motor_run_initial(struct motor_run_state *st) {
+void setup_motor_run_initial(struct motor_run_state *st,bool is_finish) {
 	st->change_DIR = false;
 	st->seq = 0;
 	st->timer_count = 0;
 	st->timer_unlock = false;
-	st->finish = false;
+	st->finish = is_finish;
 	st->count_goal = run_count_set; 
-
 }	
 #endif

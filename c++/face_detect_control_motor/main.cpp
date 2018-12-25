@@ -22,12 +22,14 @@ void send_command(string input);
 void motor_run();
 void stop_timer(struct itimerval *src);
 
-bool detectAndDisplay( Mat frame );
+bool detectAndDisplay( Mat frame, bool eyes_detect );
 /** Global variables */
 String face_cascade_name = "haarcascade_frontalface_alt.xml";
+//String face_cascade_name = "haarcascade_frontalcatface.xml";
 CascadeClassifier face_cascade;
-#if 0
+#if 1
 String eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
+//String eyes_cascade_name = "haarcascade_eye.xml";
 CascadeClassifier eyes_cascade;
 #endif
 
@@ -47,8 +49,8 @@ int main() {
 		char str[5];	
 		setup_motor_initial_state(&MTR_ST);
 		setup_detect_state(&DCT_ST);
-		setup_motor_run_initial(&MTR_RUN);
-		if(!timer_initial(&timer,1, 10000)) {
+		setup_motor_run_initial(&MTR_RUN, false);
+		if(!timer_initial(&timer,1, timer_interval)) {
 			printf("timer initial wrong!\n");	
 			return -1;
 		}
@@ -78,7 +80,7 @@ int main() {
         printf("--(!)Error loading\n");
         return -1;
     }
-#if 0
+#if 1
     if (!eyes_cascade.load(eyes_cascade_name))
     {
         printf("--(!)Error loading\n");
@@ -96,19 +98,35 @@ int main() {
             cap>>frame;   //把取得的影像放置到矩陣中
             if( !frame.empty() ) { 
 							if(!DCT_ST.face_detect) {
-								if(detectAndDisplay( frame )) {
+								if(detectAndDisplay( frame, false )) {
 									DCT_ST.face_detect = true;	
 									send_command(motor_stop);
 									MTR_RUN.finish = true;
-									setup_motor_run_initial(&MTR_RUN);
+									setup_motor_run_initial(&MTR_RUN, true);
 									stop_timer(&timer);
 									printf("detect face\n");
 								} else {
 									//keep doing detect
 									motor_run();
 								}
-							} else {
-								imshow("live", frame);                //建立一個視窗,顯示frame到camera名稱的視窗
+							} else if(DCT_ST.face_detect && !DCT_ST.eyes_detect) {
+									if(detectAndDisplay( frame, true )) {
+										DCT_ST.eyes_detect = true;	
+										setup_motor_run_initial(&MTR_RUN, false);
+										printf("detect eyes\n");
+										if(!timer_initial(&timer,1, timer_interval)) {
+												printf("timer initial wrong!\n");
+												return -1;
+										}
+									}
+							} else if(DCT_ST.face_detect && DCT_ST.eyes_detect && !DCT_ST.all_detect_ok) {
+									//LED on and motor get back opposite direction quickly 
+									motor_run();
+							} else if(DCT_ST.all_detect_ok) {
+									MTR_RUN.finish = true;
+									send_command(motor_stop);
+									stop_timer(&timer);
+									//printf("action completed\n");
 							}
 						} else {
 							printf(" --(!) No captured frame -- Break!"); 
@@ -126,10 +144,9 @@ int main() {
     return 0;
 }
 
-bool detectAndDisplay( Mat frame )
-{
+bool detectAndDisplay(Mat frame, bool eyes_detect) {
     vector<Rect>faces;
-		float scale = 0.5;
+		float scale = 0.6;
     Mat frame_resize;
     Mat frame_gray;
 		bool detect = false;
@@ -147,29 +164,42 @@ bool detectAndDisplay( Mat frame )
     {
         Point center(faces[i].x+faces[i].width*0.5,faces[i].y+faces[i].height*0.5);
         ellipse(frame_resize,center,Size( faces[i].width*0.5, faces[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0);
-#if 0 
+#if 1 
+			if(eyes_detect) {
+				detect = false;
         Mat faceROI = frame_gray( faces[i] );
         std::vector<Rect> eyes;
         //-- In each face, detect eyes
-        eyes_cascade.detectMultiScale( faceROI, eyes, 1.1, 2, 0 , Size(30, 30) );
+        //eyes_cascade.detectMultiScale( faceROI, eyes, 1.1, 2, 0 , Size(30, 30) );
+        eyes_cascade.detectMultiScale( faceROI, eyes, 1.1, 2, 0 , Size(5, 5) );
         for( int j = 0; j < eyes.size(); j++ )
         {
             Point center( faces[i].x + eyes[j].x + eyes[j].width*0.5, faces[i].y + eyes[j].y + eyes[j].height*0.5 );
             int radius = cvRound( (eyes[j].width + eyes[j].height)*0.25 );
-            circle( frame, center, radius, Scalar( 255, 0, 0 ), 4, 8, 0 );
+            circle( frame_resize, center, radius, Scalar( 255, 0, 0 ), 4, 8, 0 );
         }
+				if(eyes.size() > 0) {
+					//printf("detect face\n");
+					detect = true;
+				}
+			}
 #endif
     }
+		moveWindow(window_name, 300 , 100);
     imshow(window_name, frame_resize);                //建立一個視窗,顯示frame到camera名稱的視窗
-		//resize(frame_resize, frame, Size(frame_resize.cols/scale, frame_resize.rows/scale),0,0,INTER_LINEAR);
-    //imshow(window_name, frame);                //建立一個視窗,顯示frame到camera名稱的視窗
+
+#if 0
+		//resize to origin image,but system's speed will become too slow
+		resize(frame_resize, frame, Size(frame_resize.cols/scale, frame_resize.rows/scale),0,0,INTER_LINEAR);
+    imshow(window_name, frame);                //建立一個視窗,顯示frame到camera名稱的視窗
+#endif
     return detect;
 }
 
 bool timer_initial(struct itimerval *src,int next, int interval) {
 	
 	src->it_interval.tv_usec = interval;
-	src->it_interval.tv_sec = 0/*interval*/;
+	src->it_interval.tv_sec = 0;
 	src->it_value.tv_usec = 0;
 	src->it_value.tv_sec = next;
 
@@ -189,7 +219,7 @@ void timer_event(int a) {
 		}
 	}
 
-	if(MTR_ST.finish && !MTR_RUN.finish) {
+	if(MTR_ST.finish && !MTR_RUN.finish && !DCT_ST.face_detect) {
 		if(MTR_RUN.timer_unlock) {
 			MTR_RUN.timer_count = MTR_RUN.timer_count + 1; 
 			if(MTR_RUN.timer_count == MTR_RUN.count_goal) {
@@ -198,33 +228,54 @@ void timer_event(int a) {
 				MTR_RUN.seq = MTR_RUN.seq + 1;
 				if(MTR_RUN.seq == 4) {
 					MTR_RUN.seq = 0;
-					printf("timer\n");
+					//printf("timer\n");
 				}
 			}
 		}
 	}
+
+	if(MTR_ST.finish && !MTR_RUN.finish && DCT_ST.face_detect 
+		&& DCT_ST.eyes_detect) {
+		if(MTR_RUN.timer_unlock) {
+			MTR_RUN.timer_count = MTR_RUN.timer_count + 1; 
+			if(MTR_RUN.timer_count == MTR_RUN.count_goal) {
+				MTR_RUN.timer_count = 0;
+				MTR_RUN.timer_unlock = false;
+				MTR_RUN.seq = MTR_RUN.seq + 1;
+				if(MTR_RUN.seq == 5) {
+					DCT_ST.all_detect_ok = true;	
+					//printf("timer\n");
+				}
+			}
+		}
+	}
+
 }
 
 void motor_initial() {
 		switch(MTR_ST.seq) {
 			case 0:
-				send_command(motor_nothing);
-				MTR_ST.timer_unlock = true;
+					send_command(motor_nothing);
+					MTR_ST.timer_unlock = true;
+					//printf("motor_initial nothing\n");
 			break;
 			case 1:
-				send_command(CCW);
-				MTR_ST.timer_unlock = true;
-				MTR_RUN.change_DIR = true;
+					send_command(CCW);
+					MTR_ST.timer_unlock = true;
+					MTR_RUN.change_DIR = true;
+					//printf("motor_initial CCW\n");
 			break;
 			case 2:
-				send_command(motor_spd7);
-				MTR_ST.timer_unlock = true;
+					send_command(motor_spd7);
+					MTR_ST.timer_unlock = true;
+					//printf("motor_initial spd7\n");
 			break;
 			case 3:
-				send_command(LED_off);
-				MTR_ST.timer_unlock = false;
-				MTR_ST.finish = true;
-				printf("motor_initial_ok\n");
+					send_command(LED_off);
+					MTR_ST.timer_unlock = false;
+					MTR_ST.finish = true;
+					//printf("motor_initial LED off\n");
+					//printf("motor_initial_ok\n");
 			break;
 			default:
 				MTR_ST.timer_unlock = false;
@@ -233,33 +284,75 @@ void motor_initial() {
 }
 
 void motor_run() {
-	switch(MTR_RUN.seq) {
-		case 0:
-			if(MTR_RUN.change_DIR) { 
-				send_command(CW);
-			} else {
-				send_command(CCW);
-			}
-			MTR_RUN.change_DIR = !MTR_RUN.change_DIR;
-			MTR_RUN.count_goal = run_count_set;
-			MTR_RUN.timer_unlock = true;
-		break;
-		case 1:
-			send_command(motor_spd6);
-			MTR_RUN.count_goal = run_count_set;
-			MTR_RUN.timer_unlock = true;
-		break;
-		case 2:
-			send_command(motor_steps_1000);
-			MTR_RUN.count_goal = run_count_rotate;
-			MTR_RUN.timer_unlock = true;
-		break;
-		case 3:
-			send_command(motor_stop);
-			MTR_RUN.count_goal = run_count_set;
-			MTR_RUN.timer_unlock = true;
-		break;
-	};
+	if(!DCT_ST.face_detect && !DCT_ST.eyes_detect) {
+		switch(MTR_RUN.seq) {
+			case 0:
+					if(MTR_RUN.change_DIR) { 
+						//printf("motor_run CW\n");
+						send_command(CW);
+					} else {
+						//printf("motor_run CCW\n");
+						send_command(CCW);
+					}
+					MTR_RUN.change_DIR = !MTR_RUN.change_DIR;
+					MTR_RUN.count_goal = run_count_set;
+					MTR_RUN.timer_unlock = true;
+			break;
+			case 1:
+					send_command(motor_spd6);
+					MTR_RUN.count_goal = run_count_set;
+					MTR_RUN.timer_unlock = true;
+					//printf("motor_run spd6\n");
+			break;
+			case 2:
+					send_command(motor_steps_1000);
+					MTR_RUN.count_goal = run_count_rotate;
+					MTR_RUN.timer_unlock = true;
+					//printf("motor_run steps 1000\n");
+			break;
+			case 3:
+					send_command(motor_stop);
+					MTR_RUN.count_goal = run_count_set;
+					MTR_RUN.timer_unlock = true;
+					//printf("motor_run stop\n");
+			break;
+		};
+	} else if(DCT_ST.face_detect && DCT_ST.eyes_detect) {
+		switch(MTR_RUN.seq) {
+			case 0:
+					send_command(CCW);
+					MTR_RUN.count_goal = run_count_set;
+					MTR_RUN.timer_unlock = true;
+					//printf("get back set CCW\n");
+			break;
+			case 1:
+					send_command(motor_spd3);
+					MTR_RUN.count_goal = run_count_set;
+					MTR_RUN.timer_unlock = true;
+					//printf("get back set spd3\n");
+			break;
+			case 2:
+					send_command(LED_on);
+					MTR_RUN.count_goal = run_count_set;
+					MTR_RUN.timer_unlock = true;
+					//printf("get back LED on\n");
+			break;
+			case 3:
+					send_command(motor_jog);
+					//MTR_RUN.count_goal = run_count_rotate;
+					MTR_RUN.count_goal = 5;
+					MTR_RUN.timer_unlock = true;
+					//printf("get back steps 500\n");
+			break;
+			case 4:
+					send_command(motor_stop);
+					MTR_RUN.count_goal = run_count_set;
+					MTR_RUN.timer_unlock = true;
+					//printf("get back stop\n");
+					printf("action completed\n");
+			break;
+		};
+	}
 }
 
 
