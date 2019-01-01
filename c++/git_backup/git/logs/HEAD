@@ -7,3 +7,7 @@ b05607300914802e4c3593f8137a0a1973449606 51a10a967473dbd8272ce04520961830c10e50e
 3f0bd1190dea2b2a737c8ed31232fc9e19b55b36 3f0bd1190dea2b2a737c8ed31232fc9e19b55b36 chenlonglujay <chenlonglujay@gmail.com> 1545567619 +0000	reset: moving to HEAD
 3f0bd1190dea2b2a737c8ed31232fc9e19b55b36 3f0bd1190dea2b2a737c8ed31232fc9e19b55b36 chenlonglujay <chenlonglujay@gmail.com> 1545571335 +0000	reset: moving to HEAD
 3f0bd1190dea2b2a737c8ed31232fc9e19b55b36 a538d628972b31a1e6781eaec460617feb66e05a chenlonglujay <chenlonglujay@gmail.com> 1545752893 +0000	commit: [youtuber][secret_love][c++] turn on eyes detect function and tune
+a538d628972b31a1e6781eaec460617feb66e05a a538d628972b31a1e6781eaec460617feb66e05a chenlonglujay <chenlonglujay@gmail.com> 1545754261 +0000	checkout: moving from master to test_thread
+a538d628972b31a1e6781eaec460617feb66e05a 3f0bd1190dea2b2a737c8ed31232fc9e19b55b36 chenlonglujay <chenlonglujay@gmail.com> 1545754347 +0000	reset: moving to HEAD^
+3f0bd1190dea2b2a737c8ed31232fc9e19b55b36 a538d628972b31a1e6781eaec460617feb66e05a chenlonglujay <chenlonglujay@gmail.com> 1545754357 +0000	checkout: moving from test_thread to master
+a538d628972b31a1e6781eaec460617feb66e05a ac08bb30eccfda5da599441affa301ff25b9dc76 chenlonglujay <chenlonglujay@gmail.com> 1546353480 +0000	commit: [youtuber][secret_love][c++] uses pthread to execute motor and LED

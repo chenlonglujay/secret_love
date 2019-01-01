@@ -1,14 +1,20 @@
-[youtuber][secret_love][c++] turn on eyes detect function and tune
-parameter about image size and eyes detect
+[youtuber][secret_love][c++] uses pthread to execute motor and LED
+action
+
+modify motor_control.h to C++  class framework and added motor_control.cpp
+to implement operation
 
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
 # Changes to be committed:
-#	new file:   haarcascade_frontalface_alt2.xml
+#	modified:   Makefile
 #	modified:   main.cpp
+#	new file:   motor_control.cpp
 #	modified:   motor_control.h
+#	modified:   ../send_I2C_command.h
 #
 # Untracked files:
+#	main
 #	../git_backup/
 #

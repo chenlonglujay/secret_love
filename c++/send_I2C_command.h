@@ -1,3 +1,5 @@
+#ifndef SEND_I2C_COMMAND
+#define SEND_I2C_COMMAND
 /*
 sends I2C command to share memory,for python process to get I2C command from share memory
 and transmits I2C data to arduino Mega 2560
@@ -26,6 +28,6 @@ class send_I2C_command {
 		void send_data_to_shm(char *command);
 		void send_data_to_shm_keyin();
 };	
-
+#endif
 
 
