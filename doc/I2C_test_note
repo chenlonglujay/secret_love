@@ -3,7 +3,7 @@
 
 2. raspberry Pi3 
     (1) cd c++
-    (2) make
+    (2) make I2C
     (3) ./I2C_control
     (4) type data (format: xxxxxx)
         ex: 010101

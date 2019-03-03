@@ -9,3 +9,4 @@ b33c2a16901a810ed742f37337094b5c26838fd5 2a058393df4c19e3d35973d8d692745f8775857
 fd748dc71b0af30bdf5a23414b9d9b2ed838fbdd 569c525c8dbb6e2d6c234cd2cf4f196e840d543e chenlonglujay <chenlonglujay@gmail.com> 1545558958 +0800	commit: [secret_love][arduino] modify spd6 value from 2ms to 5ms
 569c525c8dbb6e2d6c234cd2cf4f196e840d543e 460fa046ced81b3836ce31894d2737b6a3e4ca2b chenlonglujay <chenlonglujay@gmail.com> 1545559029 +0800	reset: moving to HEAD~2
 460fa046ced81b3836ce31894d2737b6a3e4ca2b c892354508a1592d3f30f000d5828900e52a5b14 chenlonglujay <chenlonglujay@gmail.com> 1545559056 +0800	am: modify spd6 value from 2ms to 5ms
+c892354508a1592d3f30f000d5828900e52a5b14 ef9b5cba4796fd64e8835930d60dc6b81f3c6a6b chenlonglujay <chenlonglujay@gmail.com> 1551620636 +0800	commit: [secret_love][arduino] modify pin number because carry board is changed to next version

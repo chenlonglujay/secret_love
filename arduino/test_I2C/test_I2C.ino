@@ -1,8 +1,8 @@
 #include <Wire.h>
 
 #define SLAVE_ADDRESS 0x04
-#define LED_R 38
-#define LED_L 35
+#define LED_R 29
+#define LED_L 28
 #define LED_value 128
 int number = 0;
 int state = 0;

@@ -1,10 +1,13 @@
- [secret_love][arduino] modify spd6 value from 2ms to 5ms
+[secret_love][arduino] modify pin number because carry board is changed to next version
+
+board version
+someone_love_you_secretly_main_board_v0.02->v0.03
 
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
 # Changes to be committed:
-#	modified:   CLPMotor_LED/CLPMotor_LED.ino
+#	modified:   test_I2C/test_I2C.ino
 #
 # Untracked files:
 #	0001-secret_love-arduino-modify-spd6-value-from-2ms-to-5m.patch
