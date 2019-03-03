@@ -44,19 +44,19 @@ struct I2C_get_data{
 
 
 //Button and LED pin and other setting
-#define face_LED_R 38
-#define face_LED_L 35
-#define LED_BTN 24
-#define CW_BTN 25
-#define CCW_BTN 26
+#define face_LED_R 29
+#define face_LED_L 28
+#define LED_BTN 25
+#define CW_BTN 26
+#define CCW_BTN 27
 #define LED_value 128
 
 
 //CLP STEP MOTOR setting
 CLPMTR *CLPM_tester = new CLPMTR;
-#define testerPUL  23
-#define testerDIR  22
-
+#define testerPUL  24
+#define testerDIR  23
+#define testerENA 22
 
 //timer setting
 unsigned int Timer4CountSet[10];
@@ -79,6 +79,7 @@ struct  motor_control{
   int set_pulse;
   enum {by_btn = 0, by_step, by_command};
   enum {CW = 0,CCW};
+  enum {DISABLE = 0, ENABLE};
   struct action_mode act_mode;
 } motor_set;
 

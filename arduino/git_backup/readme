@@ -1,0 +1,12 @@
+if this directory is alreay changed and commited, please as follows 
+1. cp -af .git ./git_backup
+2. cd git_backup
+3. zip -r git.zip .git
+4. cd to secret_love directory
+5. git add(includes arduino/git_back/git.zip) and commit
+6. git push
+7. if you are  executing 'git pull' command , please remember to execute 8 item
+8. cd to arduino/git_backup
+9. unzip git.zip
+10. cp -af .git ./ (to replace older to newer)
+*git_backup/git is already discrd please ignore it

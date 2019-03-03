@@ -27,24 +27,35 @@
   motor speed(0(fast)-9(slow))            0x05        0x00        0x0V
   face LED on                             0x06        0x00        0x01
   face LED off                            0x06        0x00        0x00
+  motor disable                           0x07        0x00        0x00  
+  motor enable                            0x07        0x00        0x01    
 ------------------------------------------------------------------------------
 
 2. raspberry Pi3 
     (1) cd c++
-    (2) make
+    (2) make I2C 
     (3) ./I2C_control
     (4) type data (format: xxxxxx) that using above list command
-        ex: 0203E8
+        ex: 070001
     (5) cd ../python
     (6) python I2C_send_command_from_shm.py
     (7) if you need to send next data ,that data must difference before
         otherwise python doesn't send data this time
 
 3. then you will see like below
+  *motor rotate needs enable motor first  
+    
     ---python view---
-    command: 2
-    valueH:  3
-    valueL:  E8
+    command: 7 valueH:  0 valueL:  1
+    
+    ---arduino view---
+    receive number: 7
+    receive command: DEC 1
+    receive command: 0x01
+    
+    *next to type steps
+    ---python view---
+    command: 2 valueH:  3 valueL:  e8
     
     ---arduino view---
     receive number: 2

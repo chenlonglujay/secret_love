@@ -106,8 +106,10 @@ void CLPMTR_JogStepSet(bool CW_CCW, bool CLPM_arrive) {
 //CLP motor initial
 void CLPMTR_initial() {
     CLPM_tester->CLP_MOTOR_Initial(testerPUL,testerDIR); 
+    CLPM_tester->CLP_MOTOR_Initial_all(testerPUL, testerDIR,  testerENA);
     CLPM_tester->setCLPMTR_LOW();
     CLPM_tester->setCLPMTR_CW();
+    CLPM_tester->setCLPMTR_Disable();
     motor_set_initial(&motor_set, motor_set.by_command);
 }
 
@@ -259,6 +261,10 @@ void judge_command(struct I2C_get_data *input) {
             LED_ON_OFF(face_LED_R, face_LED_L, LED_SW);
        }
        break;
+        case 0x07:
+          //motor enable/disable(like servo on/off)
+          set_motor_ENA(bool(input->command));
+       break;
       };    
          I2C_data_initial(&I2C_data);     
 }
@@ -268,6 +274,16 @@ void set_motor_DIR(bool DIR) {
          motor_set.DIR = CLPM_tester->setCLPMTR_CW();      
     } else if (DIR == motor_set.CCW) {    
          motor_set.DIR= CLPM_tester->setCLPMTR_CCW();
+    }
+}
+
+void set_motor_ENA(bool ST) {
+    if (ST == motor_set.DISABLE) {    
+         CLPM_tester->setCLPMTR_Disable();  
+         //Serial.println(F("motor disable "));    
+    } else if (ST == motor_set.ENABLE) {    
+         CLPM_tester->setCLPMTR_Enable();
+          //Serial.println(F("motor enable "));   
     }
 }
 
