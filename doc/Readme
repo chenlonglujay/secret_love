@@ -22,3 +22,16 @@ if you need to see details about operation ,please refer the document
 
     python:
     python I2C_send_command_from_shm.py
+
+3. I2C_test_motor_LED_easyway_note
+ (1)arduino:
+    CLPMotor_LED.ino
+
+ (2)pi:
+    c++:
+    make sendI2C
+    ./I2C_test
+
+    python:
+    python I2C_send_command_from_shm.py
+

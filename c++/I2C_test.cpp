@@ -10,7 +10,8 @@
 using namespace std; 
 send_I2C_command SIC;
 #define test_jog_mode 1
-void test_jog_mode_fn();
+void test_jog_mode_fn0();
+void test_jog_mode_fn1();
 bool timer_initial(struct itimerval *src);
 void timer_event(int a);
 int seq;
@@ -45,12 +46,9 @@ int main(int argc,char **argv) {
 			} else if(!strcmp(argv[1], "1")) {
 							
 #if test_jog_mode
-				test_jog_mode_fn();
-				//break;
+				test_jog_mode_fn0();
 #else 
-				strcpy(command, "030000");
-				SIC.send_data_to_shm(command);
-				//break;				
+				test_jog_mode_fn1();
 #endif
 			}
 		} catch(std::exception& e) {
@@ -61,24 +59,41 @@ int main(int argc,char **argv) {
 }
 
 
-void test_jog_mode_fn() {
+void test_jog_mode_fn0() {
 	char command[6];
 	int i = 0;
 	if(seq == 0) {
+		strcpy(command, "070001");		//Motor Enable
+		SIC.send_data_to_shm(command);
+	}else if(seq == 1) {
 		strcpy(command, "010000");		//CW
 		SIC.send_data_to_shm(command);
-  } else if (seq == 1) {
+  } else if (seq == 2) {
 		strcpy(command, "030000");		//jog
 		SIC.send_data_to_shm(command);		
-	} else if (seq == 2) {
+	} else if (seq == 3) {
 		strcpy(command, "010001");		//CCW
 		SIC.send_data_to_shm(command);
-	} else if(seq == 3) {
+	} else if(seq == 4) {
 		strcpy(command, "040000");		//stop
 		SIC.send_data_to_shm(command);			
 	}	
 }
 
+void test_jog_mode_fn1() {
+	char command[6];
+	int i = 0;
+	if(seq == 0) {
+		strcpy(command, "070001");		//Motor Enable
+		SIC.send_data_to_shm(command);
+	}else if(seq == 1) {
+		strcpy(command, "010000");		//CW
+		SIC.send_data_to_shm(command);
+  } else if (seq == 2) {
+		strcpy(command, "030000");		//jog
+		SIC.send_data_to_shm(command);		
+	} 
+}
 
 bool timer_initial(struct itimerval *src) {
 
@@ -104,7 +119,9 @@ void timer_event(int a) {
 	}	else if(seq == 2) {
 		seq++;
 	} else if(seq == 3) {
-		seq = 0;
+		seq++;
+	} else if(seq == 4) {
+		seq = 1;		//doesn't execute motor enable again
 	}
 
 }
