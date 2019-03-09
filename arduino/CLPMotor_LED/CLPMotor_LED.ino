@@ -76,6 +76,7 @@ void MOTOR_thread_Callback() {
           bool  CCW =   digitalRead(CCW_BTN);        
           if( CW && CCW ||  !CW && !CCW) {
               // both button has no press or both has press
+              set_motor_ENA_DISA(motor_set.DISABLE);
               CLPMTR_JogStepSet( 0, 1);      //stop motor
           } else if (!CW && CCW) {
               CLPMTR_JogStepSet( 0, 0);    
@@ -98,7 +99,11 @@ void CLPMTR_JogStepSet(bool CW_CCW, bool CLPM_arrive) {
     set_motor_DIR(CW_CCW);   
     TCNT4 = Timer4CountSet[motor_set.set_speed];
     TCNT5 = Timer5CountSet[timer5set];
-   motor_set.arrive = CLPM_arrive;
+    if(CLPM_arrive)
+       set_motor_ENA_DISA(motor_set.DISABLE);
+     else
+       set_motor_ENA_DISA(motor_set.ENABLE);
+    motor_set.arrive = CLPM_arrive;
     TimerStart();
     //Serial.println(F( "CLPMTR_JogStepSet over"));
 }
@@ -109,8 +114,13 @@ void CLPMTR_initial() {
     CLPM_tester->CLP_MOTOR_Initial_all(testerPUL, testerDIR,  testerENA);
     CLPM_tester->setCLPMTR_LOW();
     CLPM_tester->setCLPMTR_CW();
-    CLPM_tester->setCLPMTR_Disable();
-    motor_set_initial(&motor_set, motor_set.by_command);
+    set_motor_ENA_DISA(motor_set.DISABLE);
+   if(control_action == motor_set.by_btn)
+      motor_set_initial(&motor_set, motor_set.by_btn);
+    else if(control_action == motor_set.by_step)
+       motor_set_initial(&motor_set, motor_set.by_step);   
+    else if(control_action == motor_set.by_command)
+       motor_set_initial(&motor_set, motor_set.by_command);
 }
 
 
@@ -263,7 +273,7 @@ void judge_command(struct I2C_get_data *input) {
        break;
         case 0x07:
           //motor enable/disable(like servo on/off)
-          set_motor_ENA(bool(input->command));
+          set_motor_ENA_DISA(bool(input->command));
        break;
       };    
          I2C_data_initial(&I2C_data);     
@@ -277,7 +287,7 @@ void set_motor_DIR(bool DIR) {
     }
 }
 
-void set_motor_ENA(bool ST) {
+void set_motor_ENA_DISA(bool ST) {
     if (ST == motor_set.DISABLE) {    
          CLPM_tester->setCLPMTR_Disable();  
          //Serial.println(F("motor disable "));    

@@ -89,6 +89,10 @@ int test_step = 500;
 int test_pulse = test_step * 16 / 10;
 bool run_once = 0;
 //-------------------------------
+#define control_action 2
+//0,by_btn
+//1,by_step,  
+//2,by_command
 
 void combine_command(struct I2C_get_data *input) { 
     int cul0 = input->valueH;
