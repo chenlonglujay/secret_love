@@ -36,24 +36,14 @@
     (2) make I2C 
     (3) ./I2C_control
     (4) type data (format: xxxxxx) that using above list command
-        ex: 070001
+        ex: 0203E8
     (5) cd ../python
     (6) python I2C_send_command_from_shm.py
     (7) if you need to send next data ,that data must difference before
         otherwise python doesn't send data this time
 
 3. then you will see like below
-  *motor rotate needs enable motor first  
     
-    ---python view---
-    command: 7 valueH:  0 valueL:  1
-    
-    ---arduino view---
-    receive number: 7
-    receive command: DEC 1
-    receive command: 0x01
-    
-    *next to type steps
     ---python view---
     command: 2 valueH:  3 valueL:  e8
     

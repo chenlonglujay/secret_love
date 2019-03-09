@@ -38,7 +38,7 @@
         argv:0,messages like below, key in command and press enter,and loop again
         please key in number (data format: nnnnnn),press enter will exit
 				
-				ex: key in 070001	
+				ex: key in 0203E8	
 
         argv:1,motor will start rotating(jog mode) until key in 040000(stop mode),
               you can use "ctrl+c" to exit,then execute ./I2C_test 0 to key in 040000(stop mode)
@@ -49,16 +49,7 @@
         otherwise python doesn't send data this time
 
 3. then you will see like below
-    *motor ratate needs enable motor first
-    ---python view---
-    command: 7 valueH:  0 valueL:  1
-    
-    ---arduino view---
-    receive number: 7
-    receive command: 1
-    receive command: 0x01 
-
-    *next to type steps
+  
     ---python view---
     command: 2 valueH:  3 valueL:  e8
     

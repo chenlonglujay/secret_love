@@ -8,5 +8,5 @@ if this directory is alreay changed and committed, please as follows
 7. if you are  executing 'git pull' command , please remember to execute 8 item
 8. cd to c++/git_backup
 9. unzip git.zip
-10. cp -af .git ./ (to replace older to newer)
+10. mv .git ../ (to replace older to newer)
 *git_backup/git is already discrd please ignore it
