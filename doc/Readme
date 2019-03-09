@@ -35,3 +35,16 @@ if you need to see details about operation ,please refer the document
     python:
     python I2C_send_command_from_shm.py
 
+4. description
+ (1)arduino:
+    CLPMotor_LED.ino
+
+ (2)pi:
+    c++:
+		cd face_detect_control_motor 
+    make
+    ./main
+
+    python:
+    python I2C_send_command_from_shm.py
+

@@ -23,6 +23,8 @@
 #define motor_spd9 "050009"
 #define LED_ON "060001"
 #define LED_OFF "060000"
+#define motor_disable "070000"
+#define motor_enable "070001"
 
 #define motor_steps_1000 "0203E8"	//1 circle
 #define motor_steps_500 "0201F4"	//half circle
@@ -36,7 +38,7 @@
 
 #define initial_seq_goal 3
 #define detect_face_seq_goal 4
-#define go_back_seq_goal	5
+#define go_back_seq_goal	6
 
 
 struct send_command {

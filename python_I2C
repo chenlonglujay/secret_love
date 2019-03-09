@@ -1,0 +1,5 @@
+#!/bin/bash
+cd python
+echo "run python I2C_send_command_from_shm.py"
+python I2C_send_command_from_shm.py
+

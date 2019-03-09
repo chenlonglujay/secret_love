@@ -14,7 +14,8 @@ motor stop(no pulse)			        0x04		0x00		0x00
 motor speed(0(fast)-9(slow))		    0x05		0x00		0x0V 									
 face LED on								0x06		0x00		0x01
 face LED off							0x06		0x00		0x00
-
+motor disable							0x07		0x00		0x00
+motor enable							0x07		0x00		0x01
 
 *n1*					
 motor driver sets 1600 pulses let motor run 1000 steps
@@ -26,5 +27,36 @@ pulse : step	= pulse :	step
 						x	=	1.6
 so at least drive motor needs 8 pules(1.6*5) that equals motor run 5 steps
 
+$ cd secret_love/c++/face_detect_control_motor 
+$ make
+
+test way 1
+open a terminal(T1)
+$ ./main
+wait for executing python 
+open another terminal(T2)
+$ cd secret_love/python
+$ python I2C_send_command_from_shm.py
+get back to T1
+type ok
+
+test way2
+open a terminal(T1)
+$ cd secret_love
+$ ./secret_love
+wait for executing python 
+open another terminal(T2)
+$ cd secret_love
+$ ./python_I2C
+get back to T1
+type ok
+
 (2)arduino Mega 2560
 control LED on face and make pluses to rotate or stop for step motor 
+
+arduino Meag 2560 burning program "CLPMotor_LED.ino" 
+if you need to watch receive data
+ using Serial Monitor to observe receive data from raspberry Pi3 by I2C
+
+
+

@@ -365,6 +365,18 @@ void motor_control::run_action(struct send_command *src) {
 					set_timer_lock_flag(false);
 				}
 			break;
+			case 5:
+				if(!get_already_set_flag()) {
+					set_already_set_flag(true);
+					strcpy(src->command, motor_disable);
+					set_timer_goal(t_set);
+					if(!get_printfed_flag()) {
+						printf("go_back:motor sets disable\n");
+					}
+					set_timer_lock_flag(false);
+				}
+			break;
+
 		};
 	}	
 
